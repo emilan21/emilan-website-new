@@ -1,0 +1,92 @@
+body {
+	background-color: #F0EBCE;
+	padding-top:100px;
+	margin: 0;
+	padding: 0;
+	scroll-behavior: smooth;
+
+}
+
+html {
+	margin: 0;
+	padding: 0;
+	scroll-behavior: smooth;
+}
+
+/* main */
+main {
+  margin-top: 4rem;
+}
+
+/* section */
+section {
+  display: flex;
+  margin-top:4rem;
+  /* justify-content: center; */
+  flex-direction: column;
+  /*height: 90vh; */
+  margin-left: 20px;
+  /*   margin-top:7vh; */
+}
+
+/* headers */
+h1 {
+  font-size: 60px;
+  color: #AA8B56;
+}
+
+h2 {
+  font-size: 48px;
+  color: #AA8B56;
+}
+
+h3 {
+  font-size: 30px;
+  margin:0;
+  padding:0;
+  color: #AA8B56;
+
+}
+
+h4 {
+  font-size: 24px;
+  margin:0;
+  padding:0;
+  color: #AA8B56;
+}
+
+/* same line alignment */
+.alignleft {
+	float: left;
+}
+.alignright {
+	float: right;
+}
+
+/* navbar */
+.navbar {
+  overflow: hidden;
+  background-color: #395144;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.navbar a {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  background-color: #4E6C50;
+}
+
+/* color of dates */
+.dates {
+  color: #4E6C50;
+}

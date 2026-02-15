@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Testing
+.nyc_output/
+coverage/
+
+# Environment
+.env
+.env.local
+
+# Terraform (handled in infrastructure/.gitignore)
+*.tfstate
+*.tfstate.*
+**/.terraform/
+*.tfvars
+*.tfvars.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Archives
+*.zip
+!*_payload.zip

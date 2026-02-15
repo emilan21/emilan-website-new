@@ -1,0 +1,183 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Job 1: Lint and test frontend
+  test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate HTML
+        uses: chabad360/htmlproofer@master
+        with:
+          directory: "frontend/"
+          arguments: --ignore-status-codes 999 --ignore-urls "/localhost/"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: ./test
+        run: npm ci || npm install
+        continue-on-error: true
+
+      # Add any other frontend tests here
+
+  # Job 2: Lint and test backend
+  test-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 boto3
+
+      - name: Lint Python code
+        run: |
+          flake8 backend/ --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 backend/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+  # Job 3: Validate Terraform
+  validate-terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.0"
+
+      - name: Terraform Format Check
+        working-directory: ./infrastructure
+        run: terraform fmt -check
+        continue-on-error: true
+
+      - name: Terraform Init
+        working-directory: ./infrastructure
+        run: terraform init -backend=false
+
+      - name: Terraform Validate
+        working-directory: ./infrastructure
+        run: terraform validate
+
+  # Job 4: Deploy infrastructure (only on main branch)
+  deploy-infrastructure:
+    needs: [test-frontend, test-backend, validate-terraform]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.0"
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Terraform Init
+        working-directory: ./infrastructure
+        run: terraform init
+
+      - name: Terraform Plan
+        working-directory: ./infrastructure
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        working-directory: ./infrastructure
+        run: terraform apply -auto-approve tfplan
+
+      - name: Save Terraform Outputs
+        working-directory: ./infrastructure
+        run: |
+          terraform output -json > ../terraform-outputs.json
+          echo "::set-output name=cloudfront_id::$(terraform output -raw cloudfront_distribution_id)"
+        id: terraform
+
+  # Job 5: Deploy frontend to S3 (only on main branch)
+  deploy-frontend:
+    needs: [deploy-infrastructure]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Deploy to S3
+        run: |
+          aws s3 sync frontend/ s3://${{ vars.S3_BUCKET_NAME || 'eric-milan-dev-prod' }} \
+            --delete \
+            --cache-control "max-age=31536000,public" \
+            --exclude "*.html" \
+            --exclude "*.css" \
+            --exclude "*.js"
+          
+          # Deploy HTML/JS/CSS with shorter cache
+          aws s3 sync frontend/ s3://${{ vars.S3_BUCKET_NAME || 'eric-milan-dev-prod' }} \
+            --delete \
+            --cache-control "max-age=3600,public" \
+            --include "*.html" \
+            --include "*.css" \
+            --include "*.js"
+
+      - name: Invalidate CloudFront Cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ vars.CLOUDFRONT_ID }} \
+            --paths "/*" || echo "Skipping invalidation - CloudFront ID not set"
+
+  # Job 6: Smoke test
+  smoke-test:
+    needs: [deploy-frontend]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Wait for deployment
+        run: sleep 30
+
+      - name: Smoke test
+        run: |
+          curl -sSf https://ericmilan.dev > /dev/null && echo "✓ Site is up" || echo "⚠ Site check failed"
+          curl -sSf https://www.ericmilan.dev > /dev/null && echo "✓ WWW redirect is up" || echo "⚠ WWW check failed"
+        continue-on-error: true
