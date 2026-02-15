@@ -1,0 +1,15 @@
+# Cloudflare Worker Configuration
+# This Worker handles the visitor counter API
+
+name = "visitor-counter"
+main = "index.js"
+compatibility_date = "2024-01-01"
+
+# KV namespace for storing visitor count
+[[kv_namespaces]]
+binding = "VISITOR_COUNTER"
+id = "acc3cd73e6f94ee09e716c0da2c2b619"  # Your KV namespace ID from: wrangler kv namespace list
+
+# Route - where the worker will be accessible
+# You can add a custom domain later in Cloudflare dashboard
+# route = { pattern = "api.ericmilan.dev/*", custom_domain = true }

@@ -47,7 +47,8 @@ resource "aws_cloudfront_distribution" "website" {
   price_class = "PriceClass_100" # North America and Europe only (cheaper)
 
   tags = {
-    Environment = "prod"
+    Environment = var.environment
+    ManagedBy   = "terraform"
   }
 
   viewer_certificate {
@@ -61,11 +62,13 @@ resource "aws_cloudfront_distribution" "website" {
 }
 
 # WWW redirect CloudFront distribution
+# Only created in production environment
 resource "aws_cloudfront_distribution" "www_redirect" {
+  count   = var.enable_www_redirect ? 1 : 0
   enabled = true
 
   origin {
-    domain_name = aws_s3_bucket_website_configuration.www_redirect.website_endpoint
+    domain_name = aws_s3_bucket_website_configuration.www_redirect[0].website_endpoint
     origin_id   = "www-${local.s3_origin_id}"
 
     custom_origin_config {
@@ -105,7 +108,8 @@ resource "aws_cloudfront_distribution" "www_redirect" {
   price_class = "PriceClass_100"
 
   tags = {
-    Environment = "prod"
+    Environment = var.environment
+    ManagedBy   = "terraform"
   }
 
   viewer_certificate {

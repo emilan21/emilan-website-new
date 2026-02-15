@@ -1,0 +1,29 @@
+# Cloudflare Pages Configuration
+# For deployment to Cloudflare Pages with automatic SSL
+
+name = "ericmilan-website"
+compatibility_date = "2024-01-01"
+
+# Build command (not needed for static site, but good practice)
+[build]
+command = "echo 'Static site - no build needed'"
+
+# The output directory containing your built files
+[site]
+bucket = "./frontend"
+
+# Environment variables (for visitor counter API)
+[vars]
+# These will be available in your JavaScript at runtime
+ENVIRONMENT = "production"
+
+# Secrets (API Gateway URL for visitor counter)
+# Add these via Cloudflare dashboard or CLI:
+# wrangler secret put API_BASE_URL
+# wrangler secret put VISITOR_COUNTER_API
+
+[[env.production]]
+name = "ericmilan-website-prod"
+
+[[env.test]]
+name = "ericmilan-website-test"

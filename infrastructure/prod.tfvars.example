@@ -1,0 +1,16 @@
+# Production Environment Configuration
+# Copy to prod.tfvars (DO NOT commit .tfvars files!)
+
+account_id = "518835924951"  # Your PROD AWS account ID
+
+domain_name = "ericmilan.dev"  # Production domain
+
+s3_bucket_name = "eric-milan-dev-prod"  # Production bucket name
+
+stage_name = "prod"
+
+lambda_role_arn = "arn:aws:iam::518835924951:role/lambda-visitor-counter-role"
+
+environment = "prod"
+
+enable_www_redirect = true  # Enable www redirect for production

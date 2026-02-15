@@ -5,7 +5,8 @@ resource "aws_s3_bucket" "website" {
 
   tags = {
     Name        = var.s3_bucket_name
-    Environment = "prod"
+    Environment = var.environment
+    ManagedBy   = "terraform"
   }
 }
 
@@ -58,18 +59,22 @@ resource "aws_s3_bucket_public_access_block" "website" {
 }
 
 # WWW redirect bucket - redirects www.ericmilan.dev to ericmilan.dev
+# Only created in production environment
 resource "aws_s3_bucket" "www_redirect" {
+  count         = var.enable_www_redirect ? 1 : 0
   bucket        = "www.${var.s3_bucket_name}"
   force_destroy = true
 
   tags = {
     Name        = "www-${var.s3_bucket_name}"
-    Environment = "prod"
+    Environment = var.environment
+    ManagedBy   = "terraform"
   }
 }
 
 resource "aws_s3_bucket_website_configuration" "www_redirect" {
-  bucket = aws_s3_bucket.www_redirect.id
+  count  = var.enable_www_redirect ? 1 : 0
+  bucket = aws_s3_bucket.www_redirect[0].id
 
   redirect_all_requests_to {
     host_name = var.domain_name
@@ -78,7 +83,8 @@ resource "aws_s3_bucket_website_configuration" "www_redirect" {
 }
 
 resource "aws_s3_bucket_public_access_block" "www_redirect" {
-  bucket = aws_s3_bucket.www_redirect.id
+  count  = var.enable_www_redirect ? 1 : 0
+  bucket = aws_s3_bucket.www_redirect[0].id
 
   block_public_acls       = true
   block_public_policy     = false

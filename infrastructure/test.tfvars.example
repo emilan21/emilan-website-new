@@ -1,0 +1,16 @@
+# Test Environment Configuration
+# Copy to test.tfvars (DO NOT commit .tfvars files!)
+
+account_id = "123456789012"  # Your TEST AWS account ID
+
+domain_name = "test.ericmilan.dev"  # Test subdomain
+
+s3_bucket_name = "eric-milan-dev-test"  # Test bucket name (must be globally unique)
+
+stage_name = "test"
+
+lambda_role_arn = "arn:aws:iam::123456789012:role/lambda-visitor-counter-role-test"
+
+environment = "test"
+
+enable_www_redirect = false  # No www redirect for test environment

@@ -44,3 +44,8 @@ build/
 # Archives
 *.zip
 !*_payload.zip
+
+# Cloudflare/Wrangler
+.wrangler/
+.dev.vars
+.dev.vars.example

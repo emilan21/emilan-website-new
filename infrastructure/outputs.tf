@@ -44,8 +44,8 @@ output "cloudfront_distribution_id" {
 }
 
 output "www_cloudfront_domain_name" {
-  description = "WWW redirect CloudFront distribution domain name"
-  value       = aws_cloudfront_distribution.www_redirect.domain_name
+  description = "WWW redirect CloudFront distribution domain name (only in prod)"
+  value       = var.enable_www_redirect ? aws_cloudfront_distribution.www_redirect[0].domain_name : "N/A (not enabled)"
 }
 
 # API Gateway Information

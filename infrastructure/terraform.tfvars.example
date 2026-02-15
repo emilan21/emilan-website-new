@@ -1,0 +1,7 @@
+# Copy this file to terraform.tfvars and fill in your values
+# DO NOT commit terraform.tfvars to git!
+
+account_id = "518835924951"
+domain_name = "ericmilan.dev"
+s3_bucket_name = "eric-milan-dev-prod"
+lambda_role_arn = "arn:aws:iam::518835924951:role/lambda-visitor-counter-role"

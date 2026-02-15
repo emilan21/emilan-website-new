@@ -1,170 +1,182 @@
 # ericmilan.dev
 
-Personal resume website with serverless visitor counter, hosted on AWS.
+Personal resume website with serverless visitor counter.
 
-## Architecture
+## Quick Start (Cloudflare - Recommended)
 
-This is a static website with a serverless backend, deployed to AWS:
+**Fully serverless, no AWS needed!**
 
-- **Frontend**: Static HTML/CSS/JavaScript hosted on S3
-- **CDN**: CloudFront for global distribution and SSL
-- **Backend**: Python Lambda functions for visitor counting
-- **Database**: DynamoDB for storing visit counts
-- **API**: API Gateway with CORS support
-- **DNS**: Porkbun (domain registrar)
-- **SSL**: AWS Certificate Manager (free, auto-renewing)
+- **Frontend**: Cloudflare Pages (free hosting + SSL)
+- **Visitor Counter**: Cloudflare Worker + KV (free serverless function)
+- **Cost**: **$0/month** (within free tier limits)
+
+### Deploy in 5 Minutes:
+
+```bash
+# 1. Install Wrangler CLI
+npm install -g wrangler
+
+# 2. Login to Cloudflare
+wrangler login
+
+# 3. Deploy visitor counter worker
+cd worker
+wrangler kv namespace create "VISITOR_COUNTER"
+# Copy the ID to wrangler.toml, then:
+wrangler deploy
+
+# 4. Deploy website
+cd ..
+wrangler pages deploy frontend --project-name=ericmilan-website
+
+# 5. Add custom domain in Cloudflare dashboard
+# 6. Update Namecheap nameservers
+# Done! 🎉
+```
+
+### GitHub Auto-Deploy (Optional but Recommended)
+
+Setup automatic deployment when you push to GitHub:
+
+1. **Get Cloudflare API Token**:
+   - Cloudflare dashboard → My Profile → API Tokens
+   - Create token with `Cloudflare Pages:Edit` and `Account:Read` permissions
+   - Copy the token
+
+2. **Add GitHub Secrets**:
+   - GitHub repo → Settings → Secrets and variables → Actions
+   - Add `CLOUDFLARE_API_TOKEN` - paste your token
+   - Add `CLOUDFLARE_ACCOUNT_ID` - get from Cloudflare dashboard right sidebar
+
+3. **Push to main branch**:
+   ```bash
+   git add .
+   git commit -m "Update website"
+   git push origin main
+   ```
+   
+   Website automatically deploys! 🚀
+
+**Full guide**: [CLOUDFLARE_WORKER.md](CLOUDFLARE_WORKER.md)
+
+---
+
+## Architecture Options
+
+### Option 1: Cloudflare Only ⭐ (Recommended)
+```
+ericmilan.dev (Pages) → Cloudflare CDN + SSL
+api.ericmilan.dev (Worker) → Cloudflare KV storage
+```
+- **Pros**: Free, automatic SSL, global CDN, simple deployment
+- **Cons**: Less control than AWS (but you probably don't need it)
+
+### Option 2: AWS (Legacy - More Complex)
+```
+ericmilan.dev → S3 → CloudFront → Route53 (DNS)
+API → API Gateway → Lambda → DynamoDB
+```
+- **Pros**: Full control, enterprise-grade
+- **Cons**: Complex setup, SSL certificate validation delays, monthly costs
+
+---
 
 ## Project Structure
 
 ```
 ericmilan.dev/
-├── frontend/           # Static website files
+├── frontend/              # Your static website
 │   ├── index.html
-│   ├── 404.html
-│   ├── css/
 │   ├── js/
-│   └── files/
-├── backend/            # Lambda function code
-│   ├── get_visit_count.py
-│   ├── increment_visit_count.py
-│   └── delete_visit_count.py
-├── infrastructure/     # Terraform configuration
-│   ├── providers.tf
-│   ├── variables.tf
-│   ├── s3.tf
-│   ├── cloudfront.tf
-│   ├── lambda.tf
-│   ├── api_gateway.tf
-│   ├── dynamodb.tf
-│   ├── acm.tf
-│   └── outputs.tf
-└── .github/workflows/  # CI/CD automation
+│   │   ├── visitors.js          # Calls visitor counter API
+│   │   └── increment_visitors.js # Calls visitor counter API
+│   └── ...
+├── worker/               # Cloudflare Worker (visitor counter backend)
+│   ├── index.js         # Worker code
+│   └── wrangler.toml    # Worker config
+├── backend/            # Lambda code (optional - AWS legacy)
+├── infrastructure/     # Terraform (optional - AWS legacy)
+└── .github/workflows/  # CI/CD
 ```
 
-## Prerequisites
+## Documentation
 
-- AWS CLI configured with appropriate credentials
-- Terraform >= 1.0
-- Porkbun account (for domain management)
-- Domain registered at Porkbun: `ericmilan.dev`
+- **[CLOUDFLARE_WORKER.md](CLOUDFLARE_WORKER.md)** - Complete Cloudflare-only setup guide
+- **[CLOUDFLARE.md](CLOUDFLARE.md)** - Cloudflare Pages hosting only
+- **[DEPLOY.md](DEPLOY.md)** - AWS multi-environment deployment (legacy)
+- **[MIGRATION.md](MIGRATION.md)** - Migrating from AWS to Cloudflare
 
-## Setup Instructions
+## Prerequisites (Cloudflare Option)
 
-### 1. Domain Transfer to Porkbun (if needed)
+- Cloudflare account (free tier)
+- GitHub repository
+- Domain at Namecheap
+- Wrangler CLI: `npm install -g wrangler`
 
-Transfer your domain from Namecheap to Porkbun:
-1. Unlock domain at Namecheap
-2. Get EPP code from Namecheap
-3. Initiate transfer at Porkbun
-4. Wait 5-7 days for transfer to complete
+## Why Cloudflare?
 
-### 2. Infrastructure Deployment
+| Feature | AWS | Cloudflare |
+|---------|-----|------------|
+| **SSL Setup** | 30+ min (ACM validation) | **Instant** |
+| **Deployment** | Terraform + S3 + CloudFront | **Git push** |
+| **Visitor Counter** | Lambda + DynamoDB + API Gateway | **Worker + KV** |
+| **Cost** | ~$1-2/month | **Free** |
+| **Complexity** | High | **Low** |
+| **CDN** | CloudFront (paid) | **Global (free)** |
+
+For a personal resume site, Cloudflare is simpler, faster, and cheaper.
+
+## Quick Commands
 
 ```bash
-cd infrastructure/
+# Deploy everything
+wrangler login
+wrangler pages deploy frontend --project-name=ericmilan-website
+cd worker && wrangler deploy
 
-# Copy example variables
-cp terraform.tfvars.example terraform.tfvars
-# Edit terraform.tfvars with your AWS account ID
-
-# Initialize Terraform
-terraform init
-
-# Plan deployment
-terraform plan
-
-# Apply deployment (this creates AWS resources but CloudFront won't work yet)
-terraform apply
+# Or use the script
+./deploy-cloudflare.sh
 ```
 
-**Important**: After the first `terraform apply`, the certificate will be pending validation. You'll see output with DNS records to create at Porkbun.
+## Updating Your Website
 
-### 3. DNS Configuration at Porkbun
-
-Log into Porkbun and create these DNS records (shown in Terraform output):
-
-**Required for ACM Certificate Validation:**
-- CNAME records to prove domain ownership to AWS
-
-**Required for Website:**
-- ALIAS or CNAME record for root domain pointing to CloudFront
-- CNAME record for www subdomain
-
-### 4. Complete Infrastructure Setup
-
-After DNS records propagate (5-30 minutes):
-
+### Method 1: GitHub Auto-Deploy (Easiest)
 ```bash
-# Re-run terraform apply to complete certificate validation
-terraform apply
+# Edit files
+vim frontend/index.html
+
+# Commit and push
+ git add .
+ git commit -m "Update resume"
+ git push origin main
+
+# Done! Website updates automatically
 ```
 
-### 5. Deploy Frontend
-
+### Method 2: Manual Deploy
 ```bash
-# Sync frontend files to S3
-aws s3 sync frontend/ s3://eric-milan-dev-prod/
+# Edit files
+vim frontend/index.html
 
-# Invalidate CloudFront cache
-aws cloudfront create-invalidation --distribution-id <distribution-id> --paths "/*"
+# Deploy manually
+wrangler pages deploy frontend --project-name=ericmilan-website
+
+# Or use helper script
+./deploy-cloudflare.sh
 ```
 
-(Replace `<distribution-id>` with the ID from Terraform output)
-
-### 6. Update API Endpoint
-
-After API Gateway is deployed, update `frontend/js/visitors.js` and `frontend/js/increment_visitors.js` with the API Gateway URL from Terraform output.
-
-## CI/CD (GitHub Actions)
-
-The `.github/workflows/prod.yml` automatically:
-1. Validates HTML
-2. Runs tests with Cypress
-3. Deploys to S3 on push to main
-4. Invalidates CloudFront cache
-
-Required GitHub Secrets:
-- `AWS_ROLE_ARN`: IAM role for GitHub Actions OIDC
-
-## Email Setup (Optional)
-
-Porkbun offers free email forwarding:
-1. Go to Domain > Email Forwarding in Porkbun
-2. Set up forwarding for `emilan@ericmilan.dev`
-
-Or use a free service like ImprovMX for more advanced email handling.
-
-## Costs
-
-Approximate monthly costs:
-- S3: ~$0.50 (for low traffic)
-- CloudFront: ~$0.50-$1.00
-- Route53: $0 (not used - DNS at Porkbun)
-- ACM Certificate: $0 (free)
-- Lambda: $0 (within free tier)
-- DynamoDB: $0 (on-demand, low usage)
-
-**Total: ~$1-2/month**
-
-## Maintenance
-
-The setup is largely maintenance-free:
-- SSL certificates auto-renew via ACM
-- No servers to patch
-- GitHub Actions handle deployments
-
-## Terraform Destroy
-
-**Warning**: This will delete all AWS resources!
-
+### Updating the Visitor Counter API
 ```bash
-cd infrastructure/
-terraform destroy
-```
+# Edit worker code
+cd worker
+vim index.js
 
-Make sure to also:
-1. Delete S3 bucket contents manually (if `force_destroy` doesn't work)
-2. Remove DNS records from Porkbun
+# Deploy changes
+wrangler deploy
+
+# Back to project root
+cd ..
+```
 
 ## License
 
