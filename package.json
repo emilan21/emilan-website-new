@@ -1,0 +1,17 @@
+{
+  "name": "ericmilan-website",
+  "version": "1.0.0",
+  "description": "Personal portfolio website with local dev server",
+  "scripts": {
+    "dev": "wrangler pages dev frontend --port=8000 --compatibility-date=2024-01-01",
+    "dev:worker": "wrangler dev frontend/worker.js --port=8787",
+    "deploy": "wrangler pages deploy frontend",
+    "setup": "npm install -g wrangler && wrangler login"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  },
+  "keywords": ["portfolio", "cloudflare", "pages"],
+  "author": "Eric Milan",
+  "license": "MIT"
+}

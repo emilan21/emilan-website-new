@@ -1,7 +1,10 @@
 // Visitor Counter API Configuration
 // This connects to Cloudflare Worker at api.ericmilan.dev
 // The Worker uses Cloudflare KV for storage (no AWS needed!)
-const API_BASE_URL = 'https://visitor-counter.visitorcounter.workers.dev';
+// For local development with Wrangler, the worker runs on localhost:8787
+const API_BASE_URL = (typeof window !== 'undefined' && window.location.hostname === 'localhost')
+  ? 'http://localhost:8787'  // Local development
+  : 'https://visitor-counter.visitorcounter.workers.dev';  // Production
 const INCREMENT_API = `${API_BASE_URL}/counts/increment`;
 
 // Check if user has already visited this session

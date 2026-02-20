@@ -3,14 +3,11 @@
 
 name = "ericmilan-website"
 compatibility_date = "2024-01-01"
+pages_build_output_dir = "frontend"
 
 # Build command (not needed for static site, but good practice)
 [build]
 command = "echo 'Static site - no build needed'"
-
-# The output directory containing your built files
-[site]
-bucket = "./frontend"
 
 # Environment variables (for visitor counter API)
 [vars]
@@ -22,8 +19,20 @@ ENVIRONMENT = "production"
 # wrangler secret put API_BASE_URL
 # wrangler secret put VISITOR_COUNTER_API
 
-[[env.production]]
-name = "ericmilan-website-prod"
+# Local development environment
+[env.local]
+name = "ericmilan-website-local"
+[env.local.vars]
+ENVIRONMENT = "local"
 
-[[env.test]]
+# Production environment (used by GitHub Actions)
+[env.production]
+name = "ericmilan-website-prod"
+[env.production.vars]
+ENVIRONMENT = "production"
+
+# Test environment
+[env.test]
 name = "ericmilan-website-test"
+[env.test.vars]
+ENVIRONMENT = "test"
