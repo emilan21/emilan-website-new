@@ -9,9 +9,14 @@
     "setup": "npm install -g wrangler && wrangler login"
   },
   "devDependencies": {
+    "cypress": "^15.10.0",
     "wrangler": "^3.0.0"
   },
-  "keywords": ["portfolio", "cloudflare", "pages"],
+  "keywords": [
+    "portfolio",
+    "cloudflare",
+    "pages"
+  ],
   "author": "Eric Milan",
   "license": "MIT"
 }

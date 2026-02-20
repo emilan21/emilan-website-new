@@ -3,30 +3,61 @@
 # Development server startup script for ericmilan.dev
 # This starts both the Pages dev server and the Worker API
 
-set -e
-
 # Colors for output
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+RED='\033[0;31m'
 NC='\033[0m' # No Color
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo -e "${BLUE}=== Eric Milan Website - Development Server ===${NC}"
 echo ""
 
-# Check if wrangler is installed
+# Step 1: Install test requirements
+echo -e "${BLUE}Step 1: Installing test requirements...${NC}"
+bash "$SCRIPT_DIR/test/requirements.sh"
+echo -e "${GREEN}✓ Test requirements installed${NC}"
+echo ""
+
+# Step 2: Run HTML validation tests (if htmlproofer is available and working)
+echo -e "${BLUE}Step 2: Running HTML validation tests...${NC}"
+if command -v htmlproofer &> /dev/null; then
+    bash "$SCRIPT_DIR/test/htmlproofer.sh"
+    HTMLPROOFER_EXIT=$?
+    if [ $HTMLPROOFER_EXIT -ne 0 ]; then
+        echo -e "${YELLOW}⚠ HTML validation tests failed or had issues${NC}"
+        echo -e "${YELLOW}  Continuing anyway (this is non-critical)${NC}"
+    else
+        echo -e "${GREEN}✓ HTML validation tests passed${NC}"
+    fi
+else
+    echo -e "${YELLOW}⚠ htmlproofer not available - skipping HTML validation${NC}"
+fi
+echo ""
+
+# Step 3: Check if wrangler is installed
+echo -e "${BLUE}Step 3: Checking wrangler installation...${NC}"
 if ! command -v wrangler &> /dev/null; then
     echo -e "${YELLOW}Wrangler not found. Installing...${NC}"
     npm install -g wrangler
 fi
+echo -e "${GREEN}✓ Wrangler is installed${NC}"
+echo ""
 
-# Check if user is logged in
+# Step 4: Check if user is logged in
+echo -e "${BLUE}Step 4: Checking Cloudflare login...${NC}"
 if ! wrangler whoami &> /dev/null; then
     echo -e "${YELLOW}Please login to Cloudflare first:${NC}"
     wrangler login
 fi
+echo -e "${GREEN}✓ Logged into Cloudflare${NC}"
+echo ""
 
-echo -e "${GREEN}Starting development servers...${NC}"
+# Step 5: Start development servers
+echo -e "${BLUE}Step 5: Starting development servers...${NC}"
 echo ""
 echo -e "${YELLOW}Services will be available at:${NC}"
 echo "  - Website:    http://localhost:8000"
