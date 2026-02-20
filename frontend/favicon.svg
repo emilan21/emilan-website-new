@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Background circle with cream/beige -->
+  <circle cx="16" cy="16" r="15" fill="#F0EBCE" stroke="#395144" stroke-width="2"/>
+  
+  <!-- Shield/Code symbol in forest green -->
+  <path d="M16 6 L24 10 L24 18 C24 22 16 26 16 26 C16 26 8 22 8 18 L8 10 Z" 
+        fill="#395144"/>
+  
+  <!-- Code brackets in golden accent -->
+  <text x="16" y="19" font-family="monospace" font-size="10" 
+        fill="#AA8B56" text-anchor="middle" font-weight="bold">&lt;/&gt;</text>
+</svg>
