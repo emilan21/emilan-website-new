@@ -21,7 +21,7 @@
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "0.22.0",
     "chrome-launcher": "1.2.1",
-    "cypress": "15.21.1",
+    "cypress": "16.0.0",
     "cypress-axe": "1.7.0",
     "html-validate": "11.15.0",
     "lighthouse": "13.4.1",
