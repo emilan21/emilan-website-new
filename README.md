@@ -62,7 +62,7 @@ For the first remote deployment:
 2. Update `INITIAL_VISITOR_COUNT` to that count and rerun `npm test` plus `npm run deploy:dry-run`.
 3. Run `npm run deploy` and validate the generated `workers.dev` preview URL, `/api/health`, response headers, one-increment cookie behavior, and the displayed count.
 4. Attach `ericmilan.dev` as the Worker's custom domain only after preview validation. Do not initialize the production Durable Object before the final count is captured.
-5. Keep the prior Pages project, KV Worker, and their routes available for one week. Remove those Cloudflare resources only after the rollback window closes.
+5. After production validation, remove the prior Pages project, KV Worker, and legacy KV namespace.
 
 Changing `INITIAL_VISITOR_COUNT` after the Durable Object exists does not overwrite its stored count.
 
@@ -93,7 +93,7 @@ For the first 24 hours after cutover, monitor:
 - count continuity and unexpected increment patterns
 - Web Analytics traffic and Core Web Vitals
 
-Before rollback, review Cloudflare's [rollback limitations](https://developers.cloudflare.com/workers/configuration/versions-and-deployments/rollbacks/): code rollback does not roll back connected storage. To restore the old architecture during the one-week window, move the custom domain route back to Pages and re-enable the legacy Worker route; do not delete or recreate the Durable Object.
+Before rollback, review Cloudflare's [rollback limitations](https://developers.cloudflare.com/workers/configuration/versions-and-deployments/rollbacks/): code rollback does not roll back connected storage. Roll back to an earlier `ericmilan-website` Worker version while leaving the custom domain and Durable Object in place; do not delete or recreate the Durable Object.
 
 ## Caching, security, and cost
 
