@@ -40,12 +40,7 @@ jobs:
         run: npm run check:html
 
       - name: Run browser and accessibility tests
-        uses: cypress-io/github-action@v7
-        with:
-          install: false
-          start: npm run dev
-          wait-on: http://localhost:8790
-          config-file: test/cypress.config.js
+        run: npm run test:e2e
 
       - name: Run Lighthouse
         run: npm run check:lighthouse
