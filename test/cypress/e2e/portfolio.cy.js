@@ -1,23 +1,18 @@
 describe("portfolio", () => {
-  it("loads without application console errors or third-party font assets", () => {
+  it("loads without a public visitor count, analytics API call, application errors, or third-party fonts", () => {
     let fontAwesomeRequests = 0;
+    let visitsRequests = 0;
     cy.intercept("*fontawesome*", () => { fontAwesomeRequests += 1; });
+    cy.intercept("/api/visits", () => { visitsRequests += 1; });
     cy.visit("/", {
       onBeforeLoad(win) { cy.stub(win.console, "error").as("consoleError"); },
     });
-    cy.get("#visits").should("not.contain", "Loading");
+    cy.get("#visits").should("not.exist");
+    cy.contains("Approximate visitor sessions").should("not.exist");
     cy.get("@consoleError").should("not.have.been.called");
-    cy.then(() => expect(fontAwesomeRequests).to.equal(0));
-  });
-
-  it("does not double-increment the visitor count on reload", () => {
-    cy.clearCookies();
-    cy.visit("/");
-    cy.get("#visits").should(($counter) => {
-      expect($counter.text()).to.match(/^\d[\d,]*$/);
-    }).invoke("text").then((firstCount) => {
-      cy.visit("/");
-      cy.get("#visits").should("have.text", firstCount);
+    cy.then(() => {
+      expect(fontAwesomeRequests).to.equal(0);
+      expect(visitsRequests).to.equal(0);
     });
   });
 

@@ -47,7 +47,6 @@ h3 { margin-bottom: .45rem; font-size: clamp(1.25rem, 2.5vw, 1.65rem); }
 .button:hover { color: var(--forest-dark); background: var(--paper-deep); }
 .button-primary { color: white; background: var(--forest); }
 .button-primary:hover { color: white; background: var(--forest-dark); }
-.visitor-counter { width: fit-content; margin: 0; padding: .45rem .75rem; border-left: .2rem solid var(--accent); color: var(--muted); background: var(--paper-deep); font-size: .9rem; }
 .section-heading { margin-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
 .section-heading h2 { margin-bottom: 1.25rem; }
 .timeline { display: grid; gap: 1rem; }

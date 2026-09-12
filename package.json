@@ -2,7 +2,7 @@
   "name": "ericmilan-website",
   "version": "2.0.0",
   "private": true,
-  "description": "Eric Milan's portfolio and same-origin Cloudflare visitor counter",
+  "description": "Eric Milan's portfolio on Cloudflare Workers with private Web Analytics",
   "type": "module",
   "scripts": {
     "dev": "wrangler dev --port 8790",
@@ -38,7 +38,7 @@
     "sharp": "0.35.4",
     "workerd": "1.20260910.1"
   },
-  "keywords": ["portfolio", "cloudflare-workers", "durable-objects"],
+  "keywords": ["portfolio", "cloudflare-workers", "static-assets", "web-analytics"],
   "author": "Eric Milan",
   "license": "MIT"
 }
