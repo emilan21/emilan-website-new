@@ -1,183 +1,110 @@
 # ericmilan.dev
 
-Personal resume website with serverless visitor counter.
+Eric Milan's framework-free portfolio, deployed as one Cloudflare Worker. Static Assets serves the HTML, CSS, résumé, and JavaScript; a SQLite-backed Durable Object provides the same-origin visitor-session counter.
 
-## Quick Start (Cloudflare - Recommended)
+## Architecture
 
-**Fully serverless, no AWS needed!**
+```text
+ericmilan.dev
+├── /, /404.html, /css/*, /js/*  → Workers Static Assets
+└── /api/*                       → TypeScript Worker
+    └── VISITOR_COUNTER/global   → SQLite Durable Object
+```
 
-- **Frontend**: Cloudflare Pages (free hosting + SSL)
-- **Visitor Counter**: Cloudflare Worker + KV (free serverless function)
-- **Cost**: **$0/month** (within free tier limits)
+The stable `global` Durable Object instance serializes all increments. It stores only a non-negative count. A `Secure`, `HttpOnly`, `SameSite=Lax` cookie prevents another increment for 24 hours; no IP address or visitor identifier is stored. This is an approximate visitor-session metric, not a unique-person count.
 
-### Deploy in 5 Minutes:
+## Requirements and local development
+
+- Node.js 24 or newer
+- npm
+- A Cloudflare account only when deploying
+
+Install the lockfile-pinned tools and run the production-equivalent local Worker:
 
 ```bash
-# 1. Install Wrangler CLI
-npm install -g wrangler
-
-# 2. Login to Cloudflare
-wrangler login
-
-# 3. Deploy visitor counter worker
-cd worker
-wrangler kv namespace create "VISITOR_COUNTER"
-# Copy the ID to wrangler.toml, then:
-wrangler deploy
-
-# 4. Deploy website
-cd ..
-wrangler pages deploy frontend --project-name=ericmilan-website
-
-# 5. Add custom domain in Cloudflare dashboard
-# 6. Update Namecheap nameservers
-# Done! 🎉
+npm ci
+npm run types
+npm run dev
 ```
 
-### GitHub Auto-Deploy (Optional but Recommended)
+Open <http://localhost:8790>. Local Durable Object data lives under `.wrangler/` and never touches production.
 
-Setup automatic deployment when you push to GitHub:
+## API
 
-1. **Get Cloudflare API Token**:
-   - Cloudflare dashboard → My Profile → API Tokens
-   - Create token with `Cloudflare Pages:Edit` and `Account:Read` permissions
-   - Copy the token
+| Request | Response | Notes |
+| --- | --- | --- |
+| `GET /api/visits` | `200 {"count":3}` | Returns the current non-negative integer count. |
+| `POST /api/visits` | `200 {"count":4}` | Atomically increments unless the 24-hour cookie is valid. |
+| `GET /api/health` | `200 {"status":"ok"}` | Runtime health check. |
 
-2. **Add GitHub Secrets**:
-   - GitHub repo → Settings → Secrets and variables → Actions
-   - Add `CLOUDFLARE_API_TOKEN` - paste your token
-   - Add `CLOUDFLARE_ACCOUNT_ID` - get from Cloudflare dashboard right sidebar
+Unsupported methods return JSON `405` with `Allow`; unknown API routes return JSON `404`; unexpected failures return a generic JSON `500`. API responses are not cacheable and do not expose CORS headers.
 
-3. **Push to main branch**:
-   ```bash
-   git add .
-   git commit -m "Update website"
-   git push origin main
-   ```
-   
-   Website automatically deploys! 🚀
-
-**Full guide**: [CLOUDFLARE_WORKER.md](CLOUDFLARE_WORKER.md)
-
----
-
-## Architecture Options
-
-### Option 1: Cloudflare Only ⭐ (Recommended)
-```
-ericmilan.dev (Pages) → Cloudflare CDN + SSL
-api.ericmilan.dev (Worker) → Cloudflare KV storage
-```
-- **Pros**: Free, automatic SSL, global CDN, simple deployment
-- **Cons**: Less control than AWS (but you probably don't need it)
-
-### Option 2: AWS (Legacy - More Complex)
-```
-ericmilan.dev → S3 → CloudFront → Route53 (DNS)
-API → API Gateway → Lambda → DynamoDB
-```
-- **Pros**: Full control, enterprise-grade
-- **Cons**: Complex setup, SSL certificate validation delays, monthly costs
-
----
-
-## Project Structure
-
-```
-ericmilan.dev/
-├── frontend/              # Your static website
-│   ├── index.html
-│   ├── js/
-│   │   ├── visitors.js          # Calls visitor counter API
-│   │   └── increment_visitors.js # Calls visitor counter API
-│   └── ...
-├── worker/               # Cloudflare Worker (visitor counter backend)
-│   ├── index.js         # Worker code
-│   └── wrangler.toml    # Worker config
-├── backend/            # Lambda code (optional - AWS legacy)
-├── infrastructure/     # Terraform (optional - AWS legacy)
-└── .github/workflows/  # CI/CD
-```
-
-## Documentation
-
-- **[CLOUDFLARE_WORKER.md](CLOUDFLARE_WORKER.md)** - Complete Cloudflare-only setup guide
-- **[CLOUDFLARE.md](CLOUDFLARE.md)** - Cloudflare Pages hosting only
-- **[DEPLOY.md](DEPLOY.md)** - AWS multi-environment deployment (legacy)
-- **[MIGRATION.md](MIGRATION.md)** - Migrating from AWS to Cloudflare
-
-## Prerequisites (Cloudflare Option)
-
-- Cloudflare account (free tier)
-- GitHub repository
-- Domain at Namecheap
-- Wrangler CLI: `npm install -g wrangler`
-
-## Why Cloudflare?
-
-| Feature | AWS | Cloudflare |
-|---------|-----|------------|
-| **SSL Setup** | 30+ min (ACM validation) | **Instant** |
-| **Deployment** | Terraform + S3 + CloudFront | **Git push** |
-| **Visitor Counter** | Lambda + DynamoDB + API Gateway | **Worker + KV** |
-| **Cost** | ~$1-2/month | **Free** |
-| **Complexity** | High | **Low** |
-| **CDN** | CloudFront (paid) | **Global (free)** |
-
-For a personal resume site, Cloudflare is simpler, faster, and cheaper.
-
-## Quick Commands
+## Tests and checks
 
 ```bash
-# Deploy everything
-wrangler login
-wrangler pages deploy frontend --project-name=ericmilan-website
-cd worker && wrangler deploy
-
-# Or use the script
-./deploy-cloudflare.sh
+npm test                 # types, Worker tests, HTML, and local links
+npm run test:worker      # Workers runtime + real SQLite Durable Object
+npm run test:e2e         # local Worker + headless Cypress/Axe
+npm run check:html       # HTML validation and local link checks
+npm run check:lighthouse # local Lighthouse CI, all category targets >= 95
+npm run deploy:dry-run   # validate production packaging
 ```
 
-## Updating Your Website
+Worker tests cover initialization, persistence, concurrent atomic increments, the cookie window, routes, methods, response schemas, headers, and safe storage-error handling. Cypress covers browser errors, counter reloads, keyboard and pointer navigation, fixed-nav offsets, icon names, the 404 route, Axe, responsive overflow, and the absence of Font Awesome requests.
 
-### Method 1: GitHub Auto-Deploy (Easiest)
+## Counter initialization and cutover
+
+`INITIAL_VISITOR_COUNT` in `wrangler.jsonc` is used only by `INSERT OR IGNORE` when the Durable Object is first created. The repository value (`3`) was read from the legacy KV Worker on 2026-09-11; it is a snapshot, not a live synchronization mechanism.
+
+For the first remote deployment:
+
+1. Read the legacy count immediately before deploying: `curl -fsS https://visitor-counter.visitorcounter.workers.dev/counts/get`.
+2. Update `INITIAL_VISITOR_COUNT` to that count and rerun `npm test` plus `npm run deploy:dry-run`.
+3. Run `npm run deploy` and validate the generated `workers.dev` preview URL, `/api/health`, response headers, one-increment cookie behavior, and the displayed count.
+4. Attach `ericmilan.dev` as the Worker's custom domain only after preview validation. Do not initialize the production Durable Object before the final count is captured.
+5. Keep the prior Pages project, KV Worker, and their routes available for one week. Remove those Cloudflare resources only after the rollback window closes.
+
+Changing `INITIAL_VISITOR_COUNT` after the Durable Object exists does not overwrite its stored count.
+
+## Deployment and CI
+
+Manual deployment uses the exact local Wrangler version:
+
 ```bash
-# Edit files
-vim frontend/index.html
-
-# Commit and push
- git add .
- git commit -m "Update resume"
- git push origin main
-
-# Done! Website updates automatically
+npm ci
+npm test
+npm run test:e2e
+npm run check:lighthouse
+npm run deploy:dry-run
+npm run deploy
 ```
 
-### Method 2: Manual Deploy
-```bash
-# Edit files
-vim frontend/index.html
+GitHub Actions runs the same validation for pull requests and pushes. Only `main` deploys. Configure repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`; scope the token to the target account with Workers Scripts edit and account read permissions. The former Pages action is not used.
 
-# Deploy manually
-wrangler pages deploy frontend --project-name=ericmilan-website
+Cloudflare Web Analytics remains compatible with the repository CSP through explicit `static.cloudflareinsights.com` and `cloudflareinsights.com` allowances. Enable it for the Worker custom domain in the Cloudflare dashboard to retain privacy-oriented traffic and Core Web Vitals reporting. Turn off Scrape Shield **Email Address Obfuscation** for the zone so Cloudflare does not inject its email-decode script.
 
-# Or use helper script
-./deploy-cloudflare.sh
-```
+## Observability and operations
 
-### Updating the Visitor Counter API
-```bash
-# Edit worker code
-cd worker
-vim index.js
+Workers Logs and sampled traces are enabled in `wrangler.jsonc`. Errors are emitted as structured JSON with method and path, without request cookies, IP addresses, or stack traces in public responses.
 
-# Deploy changes
-wrangler deploy
+For the first 24 hours after cutover, monitor:
 
-# Back to project root
-cd ..
-```
+- Worker error rate and `/api/visits` latency in Workers Observability
+- count continuity and unexpected increment patterns
+- Web Analytics traffic and Core Web Vitals
+
+Before rollback, review Cloudflare's [rollback limitations](https://developers.cloudflare.com/workers/configuration/versions-and-deployments/rollbacks/): code rollback does not roll back connected storage. To restore the old architecture during the one-week window, move the custom domain route back to Pages and re-enable the legacy Worker route; do not delete or recreate the Durable Object.
+
+## Caching, security, and cost
+
+HTML revalidates while versioned CSS and JavaScript cache immutably. Repository-managed headers apply CSP, clickjacking protection, a restrictive Permissions Policy, referrer controls, MIME sniffing protection, and HSTS without `includeSubDomains`.
+
+Cloudflare pricing and limits can change. Check the current official documentation before deployment:
+
+- [Workers pricing](https://developers.cloudflare.com/workers/platform/pricing/)
+- [Static Assets billing and limits](https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/)
+- [Durable Objects pricing](https://developers.cloudflare.com/durable-objects/platform/pricing/)
 
 ## License
 
-MIT License - See LICENSE file
+MIT — see [LICENSE](LICENSE).

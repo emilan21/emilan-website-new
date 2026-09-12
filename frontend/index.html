@@ -1,439 +1,183 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Font Awesome -->
-    <script
-      src="https://kit.fontawesome.com/b7fed65969.js"
-      crossorigin="anonymous"
-    ></script>
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <!-- Custom stylesheet -->
-    <link rel="stylesheet" href="css/styles.min.css" />
-    <title>Eric's Portfolio</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eric Milan | Security Engineer &amp; Automation Specialist</title>
+    <meta name="description" content="Eric Milan is a Security Engineer specializing in SOC automation, threat detection, cloud security, and infrastructure engineering.">
+    <link rel="canonical" href="https://ericmilan.dev/">
+    <meta property="og:type" content="profile">
+    <meta property="og:title" content="Eric Milan | Security Engineer &amp; Automation Specialist">
+    <meta property="og:description" content="Security engineering, SOC automation, threat detection, and infrastructure projects by Eric Milan.">
+    <meta property="og:url" content="https://ericmilan.dev/">
+    <meta property="og:site_name" content="Eric Milan">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Eric Milan | Security Engineer">
+    <meta name="twitter:description" content="Security engineering, SOC automation, threat detection, and infrastructure projects.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="stylesheet" href="/css/styles.v2.css">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Eric Milan",
+        "url": "https://ericmilan.dev/",
+        "jobTitle": "Security Engineer L3",
+        "worksFor": { "@type": "Organization", "name": "Inovalon" },
+        "sameAs": [
+          "https://github.com/emilan21",
+          "https://www.linkedin.com/in/ericmilan55b240290"
+        ]
+      }
+    </script>
+    <script type="module" src="/js/site.v2.js"></script>
   </head>
   <body>
-    <div class="navbar">
-      <a href="#about">About</a>
-      <a href="#experience">Experience</a>
-      <a href="#education">Education</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
-    </div>
-    <main>
-      <section id="about">
-        <div>
-          <h1>ERIC MILAN</h1>
-          <p>
-            I am a Security Engineer L3 with expertise in SOC operations,
-            security automation, and threat detection. Previously a Network Engineer,
-            I bring strong infrastructure automation skills combined with security
-            analytics and incident response experience. I am skilled in Python, Go,
-            cloud security, and SOAR automation.
-          </p>
-          <p>
-            Throughout my career in IT I have a demonstrated history of turning
-            difficult projects into successes by indentifiying problem areas,
-            removing obstacles, and implementing process improvements. I am very
-            passionate about automation, programming, gaming, and Linux.
-          </p>
-          <p>
-            I am currently working as a Security Engineer L3 at
-            <a href="https://www.inovalon.com/" target="_blank" rel="noopener noreferrer">Inovalon</a>
-            , specializing in SOC analytics and engineering, SOAR automation,
-            and security investigations.
-          </p>
-          <div id="visit_counter">
-            <p>Visits: <span id="visits"></span></p>
-          </div>
-          <div id="links">
-            <a download href="/files/resume_current.pdf">
-              <i
-                class="fa-solid fa-file fa-fw"
-                style="font-size: 48px; color: black"
-              ></i
-            ></a>
-            <a href="https://github.com/emilan21" target="_blank" rel="noopener noreferrer"
-              ><i
-                class="fa fa-github fa-fw"
-                style="font-size: 48px; color: black"
-              ></i
-            ></a>
-            <a href="https://ericmilan.dev" target="_blank" rel="noopener noreferrer"
-              ><i
-                class="fa-solid fa-file-code fa-fw"
-                style="font-size: 48px; color: black"
-              ></i
-            ></a>
-            <a href="mailto:emilan@ericmilan.dev"
-              ><i
-                class="fa fa-envelope fa-fw"
-                style="font-size: 48px; color: black"
-              ></i
-            ></a>
-            <a href="https://www.linkedin.com/in/ericmilan55b240290" target="_blank" rel="noopener noreferrer"
-              ><i
-                class="fa fa-linkedin-square fa-fw"
-                style="font-size: 48px; color: black"
-              ></i
-            ></a>
-          </div>
-          <div style="clear: both"></div>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="wordmark" href="#about" aria-label="Eric Milan, introduction">EM</a>
+        <div class="nav-links">
+          <a href="#about">About</a>
+          <a href="#experience">Experience</a>
+          <a href="#education">Education</a>
+          <a href="#skills">Skills</a>
+          <a href="#projects">Projects</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="hero" id="about" aria-labelledby="hero-title">
+        <p class="eyebrow">Security engineering · Automation · Cloud</p>
+        <h1 id="hero-title">Eric Milan</h1>
+        <p class="hero-role">Security Engineer L3 and automation lead</p>
+        <p class="hero-summary">
+          I specialize in SOC operations, security automation, threat detection,
+          and incident response. My network engineering background brings an
+          infrastructure-first perspective to Python, Go, cloud security, and SOAR automation.
+        </p>
+        <p>
+          I turn difficult IT projects into successes by identifying problem areas,
+          removing obstacles, and improving processes. I currently work at
+          <a href="https://www.inovalon.com/" target="_blank" rel="noopener noreferrer">Inovalon</a>
+          and remain passionate about automation, programming, gaming, and Linux.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="/files/resume_current.pdf" download>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6V2Zm7 1.5V7h3.5L13 3.5ZM8 12h8v-2H8v2Zm0 4h8v-2H8v2Zm0 4h5v-2H8v2Z"/></svg>
+            Résumé
+          </a>
+          <a class="button" href="https://github.com/emilan21" target="_blank" rel="noopener noreferrer">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.69c-2.78.61-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 7c.85 0 1.71.11 2.51.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.59c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+            GitHub
+          </a>
+          <!--email_off--><a class="button" href="mailto:emilan@ericmilan.dev">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M2 5h20v14H2V5Zm10 7 8-5H4l8 5Zm0 2.35L4 9.35V17h16V9.35l-8 5Z"/></svg>
+            Email
+          </a><!--/email_off-->
+          <a class="button" href="https://www.linkedin.com/in/ericmilan55b240290" target="_blank" rel="noopener noreferrer">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5.2 3.5A2.2 2.2 0 1 1 5.2 8a2.2 2.2 0 0 1 0-4.5ZM3.3 9.5h3.8V21H3.3V9.5Zm6.2 0h3.6v1.57h.05c.5-.95 1.73-1.96 3.56-1.96 3.81 0 4.51 2.51 4.51 5.77V21h-3.76v-5.43c0-1.3-.02-2.96-1.8-2.96-1.81 0-2.09 1.41-2.09 2.87V21H9.5V9.5Z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+        <p class="visitor-counter" aria-live="polite">
+          Approximate visitor sessions: <strong id="visits">Loading…</strong>
+        </p>
+      </section>
+
+      <section id="experience" aria-labelledby="experience-title">
+        <div class="section-heading">
+          <p class="eyebrow">Career</p>
+          <h2 id="experience-title">Experience</h2>
+        </div>
+        <div class="timeline">
+          <article class="timeline-item">
+            <header class="item-heading">
+              <div><h3>Security Engineer L3</h3><p><a href="https://www.inovalon.com/" target="_blank" rel="noopener noreferrer">Inovalon</a></p></div>
+              <p class="dates"><time datetime="2024-10">Oct 2024</time> – Present</p>
+            </header>
+            <p>Automation lead for the SOC team, specializing in SOAR automation, security engineering, and threat detection.</p>
+            <ul>
+              <li>Drive SOC automation using Python, Go, SOAR platforms, and Rapid7 APIs.</li>
+              <li>Perform SOC analytics and engineering, manage ServiceNow security tickets, and conduct investigations and writeups.</li>
+              <li>Implement and manage Rapid7 SIEM, SOAR Automation, and Attack Surface Management products.</li>
+              <li>Work with Office 365, Azure, Microsoft Defender products, and CrowdStrike EDR.</li>
+              <li>Lead SOC projects focused on security posture and operational efficiency.</li>
+            </ul>
+          </article>
+          <article class="timeline-item">
+            <header class="item-heading">
+              <div><h3>Network Engineer</h3><p><a href="https://www.wjhsd.net/" target="_blank" rel="noopener noreferrer">West Jefferson Hills School District</a> · Jefferson Hills, PA</p></div>
+              <p class="dates"><time datetime="2018-04">Apr 2018</time> – <time datetime="2024-09">Sep 2024</time></p>
+            </header>
+            <ul>
+              <li>Automated KVM, GCP, AWS, Linux, and Windows infrastructure with Terraform and Ansible.</li>
+              <li>Replaced a VMware environment with KVM, GCP, and AWS, reducing cost by 70%.</li>
+              <li>Developed a Go web application to locate devices on wireless networks, reducing the risk of lost devices by 80%.</li>
+              <li>Built Go and Python applications for automated backups, data processing, and common IT tasks.</li>
+              <li>Worked with Git, Terraform, Ansible, Packer, Vim, full-stack web development, and Docker.</li>
+            </ul>
+          </article>
+          <article class="timeline-item">
+            <header class="item-heading">
+              <div><h3>Computer Technician</h3><p><a href="https://www.frazierschooldistrict.org/" target="_blank" rel="noopener noreferrer">Frazier School District</a> · Perryopolis, PA</p></div>
+              <p class="dates"><time datetime="2013-08">Aug 2013</time> – <time datetime="2018-04">Apr 2018</time></p>
+            </header>
+            <ul>
+              <li>Replaced a VMware environment with AWS, reducing cost by 60%.</li>
+              <li>Increased wireless coverage from 20% to 100% with a Cisco Meraki wired and wireless network.</li>
+              <li>Developed a Python application that monitored temperature and humidity for a student-run greenhouse.</li>
+              <li>Worked with Git, Python, Vim, and full-stack web development.</li>
+            </ul>
+          </article>
         </div>
       </section>
-      <section id="experience">
-        <h2>EXPERIENCE</h2>
-        <div>
-          <h3>SECURITY ENGINEER L3</h3>
-          <div>
-            <h4 class="alignleft">INOVALON</h4>
-          </div>
-          <div>
-            <p class="alignright dates">Oct 2024 - present</p>
-          </div>
-          <div style="clear: both"></div>
-          <p>
-            Working as a Security Engineer L3 at
-            <a href="https://www.inovalon.com/" target="_blank" rel="noopener noreferrer">Inovalon</a>
-            , serving as the automation lead for the SOC team. Specializing in
-            SOAR automation, security engineering, and threat detection.
-          </p>
-          <ul>
-            <li>
-              Serve as the automation lead, driving automation efforts across
-              the SOC team using Python, Go, and SOAR platforms.
-            </li>
-            <li>
-              Perform SOC analytics and engineering, working security tickets in
-              ServiceNow and conducting security investigations and writeups.
-            </li>
-            <li>
-              Implement and manage Rapid7 products including SIEM, SOAR Automation,
-              and Attack Surface Management.
-            </li>
-            <li>
-              Develop automation solutions using Python and Go with Rapid7 APIs
-              for security operations and threat response.
-            </li>
-            <li>
-              Work with Microsoft security stack including Office 365, Azure,
-              and Microsoft Defender products in a Microsoft-centric environment.
-            </li>
-            <li>
-              Administer and utilize CrowdStrike EDR for endpoint detection
-              and response.
-            </li>
-            <li>
-              Lead SOC-related projects to improve security posture and
-              operational efficiency.
-            </li>
-          </ul>
-        </div>
 
-        <div>
-          <h3>NETWORK ENGINEER</h3>
-          <div>
-            <h4 class="alignleft">WEST JEFFERSON HILLS SCHOOL DISTRICT</h4>
-          </div>
-          <div>
-            <p class="alignright dates">Apr 2018 - Sep 2024</p>
-          </div>
-          <div style="clear: both"></div>
-          <p>
-            Worked as a Network Engineer at
-            <a href="https://www.wjhsd.net/" target="_blank" rel="noopener noreferrer">West Jefferson Hills</a>
-            School District in Jefferson Hills, PA.
-          </p>
-          <ul>
-            <li>
-              Utilized Terraform to automate IT infrastructure for KVM, GCP, and
-              AWS environments.
-            </li>
-            <li>
-              Utilized Ansible to automate configuration and management of IT
-              infrastructure for KVM, GCP, AWS, Linux and Windows systems.
-            </li>
-            <li>
-              Spearheaded project replacing VMware environment with KVM, GPC,
-              and AWS reducing cost by 70%.
-            </li>
-            <li>
-              Developed Go web application to locate devices on wireless
-              networks reducing the risk of lost devices by 80%.
-            </li>
-            <li>
-              Developed multiple Go and Python applications for automating
-              common tasks such as automated backups and data processing.
-            </li>
-            <li>
-              Leveraged knowledge in Git, IaC tools Terraform, Ansible, and
-              Packer, programming in Go and Python using Vim, Full Stack Web
-              development, Docker.
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h3>COMPUTER TECHINCIAN</h3>
-          <div>
-            <h4 class="alignleft">FRAIZER SCHOOL DISTRICT</h4>
-          </div>
-          <div>
-            <p class="alignright dates">Aug 2013 - Apr 2018</p>
-          </div>
-          <div style="clear: both"></div>
-          <p>
-            I worked as a Computer Techincan at
-            <a href="https://www.frazierschooldistrict.org/" target="_blank" rel="noopener noreferrer"
-              >Frazier School District</a
-            >
-            in Perryopolis, PA.
-          </p>
-          <ul>
-            <li>
-              Spearheaded project replacing VMware environment with AWS reducing
-              cost by 60%.
-            </li>
-            <li>
-              Increased wireless coverage from 20% to 100% by implementing a
-              Cisco Meraki wired and wireless network.
-            </li>
-            <li>
-              Developed Python application for monitoring the temperature and
-              humidity of a student run greenhouse project.
-            </li>
-            <li>
-              Leveraged knowledge in Git, programming in Python using Vim, Full
-              Stack Web development.
-            </li>
-          </ul>
+      <section id="education" aria-labelledby="education-title">
+        <div class="section-heading"><p class="eyebrow">Learning</p><h2 id="education-title">Education</h2></div>
+        <div class="education-grid">
+          <article class="panel">
+            <p class="dates"><time datetime="2020-08">Aug 2020</time> – <time datetime="2021-05">May 2021</time></p>
+            <h3>Master of Science</h3>
+            <p class="degree">Cybersecurity and Information Assurance</p>
+            <p>Western Governors University</p>
+            <p class="detail"><strong>Coursework:</strong> Secure Network Design, Security Operations, Cloud Security, Secure Software Design, Cybersecurity Architecture and Engineering.</p>
+          </article>
+          <article class="panel">
+            <p class="dates"><time datetime="2018-04">Apr 2018</time> – <time datetime="2020-04">Apr 2020</time></p>
+            <h3>Bachelor of Science</h3>
+            <p class="degree">Cloud and Systems Administration</p>
+            <p>Western Governors University</p>
+            <p class="detail"><strong>Coursework:</strong> Scripting and Programming, Web Development, Cloud, Network and Security, Linux.</p>
+          </article>
         </div>
       </section>
-      <section id="education">
-        <h2>EDUCATION</h2>
-        <div>
-          <h3>WESTERN GOVERNORS UNIVERSITY</h3>
-          <div>
-            <h4 class="alignleft">
-              BACHELOR OF SCIENCE CLOUD AND SYSTEMS ADMINISTRATION
-            </h4>
-          </div>
-          <div>
-            <p class="alignright dates">Apr 2018 - Apr 2020</p>
-          </div>
-          <div style="clear: both"></div>
-          <p><b>Coursework:</b></p>
-          <ul>
-            <li>Scripting &#38; Programming</li>
-            <li>Web Development</li>
-            <li>Cloud</li>
-            <li>Network &#38; Security</li>
-            <li>Linux</li>
-          </ul>
-        </div>
-        <div>
-          <h3>WESTERN GOVERNORS UNIVERSITY</h3>
-          <div>
-            <h4 class="alignleft">
-              MASTER OF SCIENCE CYBERSECURITY AND INFORMATION ASSURANCE
-            </h4>
-          </div>
-          <div>
-            <p class="alignright dates">Aug 2020 - May 2021</p>
-          </div>
-          <div style="clear: both"></div>
-          <p><b>Coursework:</b></p>
-          <ul>
-            <li>Secure Network Design</li>
-            <li>Security Operations</li>
-            <li>Cloud Security</li>
-            <li>Secure Software Design</li>
-            <li>Cybersecurity Architecture and Engineering</li>
-          </ul>
+
+      <section id="skills" aria-labelledby="skills-title">
+        <div class="section-heading"><p class="eyebrow">Toolbox</p><h2 id="skills-title">Skills</h2></div>
+        <div class="skills-grid">
+          <article class="panel"><h3>Programming &amp; tools</h3><ul class="tag-list"><li>Python</li><li>Go</li><li>Bash</li><li>Git</li><li>Vim</li><li>VS Code</li><li>HTML</li><li>CSS</li></ul></article>
+          <article class="panel"><h3>Proficient in</h3><ul><li>Infrastructure as Code: Ansible, Terraform, Packer</li><li>Cloud: AWS, GCP</li><li>Virtualization and containers: KVM, VMware, Docker</li><li>Operating systems: Linux, Windows, Unix</li></ul></article>
+          <article class="panel"><h3>Knowledgeable about</h3><ul><li>Programming: C, C++, JavaScript</li><li>CI/CD: GitHub, GitHub Actions, Jenkins, AWS CodePipeline</li><li>Serverless: AWS Lambda, AWS ECS, DynamoDB</li></ul></article>
+          <article class="panel"><h3>Passionate about</h3><ul class="tag-list"><li>AWS</li><li>Infrastructure as Code</li><li>Python</li><li>Go</li><li>Automation</li><li>Linux</li></ul></article>
         </div>
       </section>
-      <section id="skills">
-        <h2>SKILLS</h2>
-        <div>
-          <h4>PROGRAMMING LANGUAGES AND TOOLS</h4>
-          <i
-            class="fa-brands fa-python fa-fw"
-            style="font-size: 48px; color: black"
-          ></i>
-          <i
-            class="fa-brands fa-golang fa-fw"
-            style="font-size: 48px; color: black"
-          ></i>
-          <i
-            class="fa-brands fa-html5 fa-fw"
-            style="font-size: 48px; color: black"
-          ></i>
-          <i
-            class="fa-solid fa-c fa-fw"
-            style="font-size: 48px; color: black"
-          ></i
-          ><i
-            class="fa-brands fa-linux fa-fw"
-            style="font-size: 48px; color: black"
-          ></i>
-          <i
-            class="fa-brands fa-docker fa-fw"
-            style="font-size: 48px; color: black"
-          ></i>
-          <i
-            class="fa-brands fa-windows fa-fw"
-            style="font-size: 48px; color: black"
-          ></i>
-          <i
-            class="fa-brands fa-git fa-fw"
-            style="font-size: 48px; color: black"
-          ></i>
-          <h4>PASSIONATE ABOUT</h4>
-          <ul>
-            <li>Amazon Web Services (AWS)</li>
-            <li>Infrastructure as Code</li>
-            <li>Python Programming</li>
-            <li>Golang Programming</li>
-            <li>Automation</li>
-            <li>Linux</li>
-          </ul>
-          <h4>PROFICIENT IN</h4>
-          <ul>
-            <li>Infrastructure as Code Tools: Ansible, Terraform, Packer</li>
-            <li>Cloud Infrastructure: AWS, GCP</li>
-            <li>Virtualization: KVM, VMWare, Docker</li>
-            <li>Operating Systems: Linux, Windows, Unix</li>
-            <li>Programming/Scripting: Bash, Golang, Python</li>
-            <li>Programming Tools: Git, Vim, Vscode</li>
-          </ul>
-          <h4>KNOWLEDGABLE ABOUT</h4>
-          <ul>
-            <li>Programming/Scripting: C, C++, CSS, HTML, Javascript</li>
-            <li>CI/CD: GitHub, GitHub Actions, Jenkins, AWS CodePipeline</li>
-            <li>
-              Serverless Technology: AWS Lambda, AWS ECS, Docker, DynamoDB
-            </li>
-          </ul>
-        </div>
-      </section>
-      <section id="projects">
-        <h2>PROJECTS</h2>
-        <div>
-          <h3>PERSONAL WEBSITE</h3>
-          <p>A personal website for my portfolio with serverless visitor counter.</p>
-          <ul>
-            <li>Cloudflare Pages (hosting + SSL)</li>
-            <li>Cloudflare Workers (serverless API)</li>
-            <li>Cloudflare KV (visitor counter storage)</li>
-            <li>GitHub Actions (CI/CD)</li>
-            <li>JavaScript</li>
-            <li>HTML/CSS</li>
-          </ul>
-          <a href="https://github.com/emilan21/emilan-website-new" target="_blank" rel="noopener noreferrer"
-            ><i class="fa fa-github" style="font-size: 36px; color: black"></i
-          ></a>
 
-          <div>
-            <h3>MACVERET</h3>
-            <p>
-              A cli app and web app to convert mac addresses from different
-              formats.
-            </p>
-            <ul>
-              <li>Python</li>
-              <li>Flask</li>
-            </ul>
-            <a href="https://github.com/emilan21/macvert" target="_blank" rel="noopener noreferrer"
-              ><i class="fa fa-github" style="font-size: 36px; color: black"></i
-            ></a>
-          </div>
-
-          <div>
-            <h3>GO-MAC-CONVERTER</h3>
-            <p>
-              Go version of the MAC address converter CLI tool. Converts between
-              multiple MAC address notations used by different networking products.
-            </p>
-            <ul>
-              <li>Go</li>
-              <li>CLI Application</li>
-              <li>Cross-platform</li>
-            </ul>
-            <a href="https://github.com/emilan21/go-mac-converter" target="_blank" rel="noopener noreferrer"
-              ><i class="fa fa-github" style="font-size: 36px; color: black"></i
-            ></a>
-          </div>
-
-          <div>
-            <h3>PYWEATHER</h3>
-            <p>
-              A Python weather application that fetches and displays weather data
-              from external APIs.
-            </p>
-            <ul>
-              <li>Python</li>
-              <li>API Integration</li>
-              <li>GitHub Actions (CI/CD)</li>
-            </ul>
-            <a href="https://github.com/emilan21/pyweather" target="_blank" rel="noopener noreferrer"
-              ><i class="fa fa-github" style="font-size: 36px; color: black"></i
-            ></a>
-          </div>
-
-          <div>
-            <h3>DEV-ENV</h3>
-            <p>
-              Automated development environment setup scripts for Linux systems.
-              Includes configuration for Vim, shell environments, and development tools.
-            </p>
-            <ul>
-              <li>Shell Scripting</li>
-              <li>Vim Configuration</li>
-              <li>Automation</li>
-              <li>Raspberry Pi Config</li>
-            </ul>
-            <a href="https://github.com/emilan21/dev-env" target="_blank" rel="noopener noreferrer"
-              ><i class="fa fa-github" style="font-size: 36px; color: black"></i
-            ></a>
-          </div>
-
-          <div>
-            <h3>PROJECTS-NOTES-GEN</h3>
-            <p>
-              A Python automation tool for generating structured notes from project
-              directories and files.
-            </p>
-            <ul>
-              <li>Python</li>
-              <li>Automation</li>
-              <li>File Processing</li>
-            </ul>
-            <a href="https://github.com/emilan21/projects-notes-gen" target="_blank" rel="noopener noreferrer"
-              ><i class="fa fa-github" style="font-size: 36px; color: black"></i
-            ></a>
-          </div>
-
-          <div>
-            <h3>ODIN-BOOK</h3>
-            <p>
-              Working through the Odin programming language book exercises and projects.
-              A systems programming language with C interoperability.
-            </p>
-            <ul>
-              <li>Odin</li>
-              <li>C Interop</li>
-              <li>Systems Programming</li>
-            </ul>
-            <a href="https://github.com/emilan21/odin-book" target="_blank" rel="noopener noreferrer"
-              ><i class="fa fa-github" style="font-size: 36px; color: black"></i
-            ></a>
-          </div>
+      <section id="projects" aria-labelledby="projects-title">
+        <div class="section-heading"><p class="eyebrow">Selected work</p><h2 id="projects-title">Projects</h2></div>
+        <div class="project-grid">
+          <article class="project-card"><h3>Personal Website</h3><p>A personal portfolio with a serverless visitor counter.</p><ul class="tag-list"><li>Cloudflare Workers</li><li>Durable Objects</li><li>GitHub Actions</li><li>JavaScript</li><li>HTML/CSS</li></ul><a class="project-link" href="https://github.com/emilan21/emilan-website-new" target="_blank" rel="noopener noreferrer">View repository <span aria-hidden="true">↗</span></a></article>
+          <article class="project-card"><h3>MACVert</h3><p>A CLI and web app that converts MAC addresses between formats.</p><ul class="tag-list"><li>Python</li><li>Flask</li></ul><a class="project-link" href="https://github.com/emilan21/macvert" target="_blank" rel="noopener noreferrer">View repository <span aria-hidden="true">↗</span></a></article>
+          <article class="project-card"><h3>Go MAC Converter</h3><p>A cross-platform CLI that converts between MAC address notations used by different networking products.</p><ul class="tag-list"><li>Go</li><li>CLI</li><li>Cross-platform</li></ul><a class="project-link" href="https://github.com/emilan21/go-mac-converter" target="_blank" rel="noopener noreferrer">View repository <span aria-hidden="true">↗</span></a></article>
+          <article class="project-card"><h3>PyWeather</h3><p>A Python weather application that fetches and displays weather data from external APIs.</p><ul class="tag-list"><li>Python</li><li>API integration</li><li>GitHub Actions</li></ul><a class="project-link" href="https://github.com/emilan21/pyweather" target="_blank" rel="noopener noreferrer">View repository <span aria-hidden="true">↗</span></a></article>
+          <article class="project-card"><h3>Dev Env</h3><p>Automated Linux development environment setup scripts for Vim, shells, development tools, and Raspberry Pi configuration.</p><ul class="tag-list"><li>Shell scripting</li><li>Vim</li><li>Automation</li></ul><a class="project-link" href="https://github.com/emilan21/dev-env" target="_blank" rel="noopener noreferrer">View repository <span aria-hidden="true">↗</span></a></article>
+          <article class="project-card"><h3>Projects Notes Gen</h3><p>A Python automation tool for generating structured notes from project directories and files.</p><ul class="tag-list"><li>Python</li><li>Automation</li><li>File processing</li></ul><a class="project-link" href="https://github.com/emilan21/projects-notes-gen" target="_blank" rel="noopener noreferrer">View repository <span aria-hidden="true">↗</span></a></article>
+          <article class="project-card"><h3>Odin Book</h3><p>Exercises and projects from the Odin programming language book, covering systems programming and C interoperability.</p><ul class="tag-list"><li>Odin</li><li>C interoperability</li><li>Systems programming</li></ul><a class="project-link" href="https://github.com/emilan21/odin-book" target="_blank" rel="noopener noreferrer">View repository <span aria-hidden="true">↗</span></a></article>
         </div>
       </section>
     </main>
-    <!-- Counter JS-->
-    <script src="js/visitors.js"></script>
-    <script src="js/increment_visitors.js"></script>
+
+    <footer><p>Built with semantic HTML, CSS, and a small amount of JavaScript.</p><p>© 2026 Eric Milan</p></footer>
   </body>
 </html>

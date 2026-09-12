@@ -1,7 +1,12 @@
-const { defineConfig } = require('cypress')
+import { defineConfig } from "cypress";
 
-module.exports = defineConfig({
+export default defineConfig({
+  video: false,
+  screenshotOnRunFailure: false,
+  retries: 0,
   e2e: {
-    baseUrl: 'http://localhost:8000',
+    baseUrl: "http://localhost:8790",
+    specPattern: "test/cypress/e2e/**/*.cy.js",
+    supportFile: "test/cypress/support/e2e.js",
   },
-})
+});

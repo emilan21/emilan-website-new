@@ -19,6 +19,9 @@ logs/
 # Testing
 .nyc_output/
 coverage/
+.lighthouseci/
+cypress/screenshots/
+cypress/videos/
 
 # Environment
 .env
