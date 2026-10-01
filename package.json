@@ -23,7 +23,7 @@
     "chrome-launcher": "1.2.1",
     "cypress": "15.21.1",
     "cypress-axe": "1.7.0",
-    "html-validate": "11.15.0",
+    "html-validate": "11.16.1",
     "lighthouse": "13.4.1",
     "linkinator": "8.1.0",
     "start-server-and-test": "3.0.12",
